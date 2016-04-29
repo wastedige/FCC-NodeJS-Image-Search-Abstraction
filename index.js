@@ -17,14 +17,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // app.set('view engine', 'ejs');
 
 app.get('/', function(q, r) {
-  r.send("Use format /YourSearchPhrase/[?offset=n]")
+  r.send("** Image Search Abstraction Layer **<br/>" +
+    "Use format /YourSearchPhrase/[?offset=n]<br/>" +
+    "Default value for n is 5")
 })
 
 app.get('/:_phrase', function(q, r) {
   search_abstraction_result = [];
-  var offset = q.query.offset
+  var offset = q.query.offset ? q.query.offset : 5;
 
-  Bing.images(phrase, {top: offset }, function(error, res, body){
+  Bing.images(phrase, {top: offset}, function(error, res, body){
     for (var i = 0; i < body.d.results.length; i++ ) {
       var temp_json_obj = new Object();
       temp_json_obj.snippet = body.d.results[i].Title
